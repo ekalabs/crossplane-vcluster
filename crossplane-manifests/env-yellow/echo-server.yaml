@@ -1,0 +1,36 @@
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: provider-helm
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: vcluster-kubeconfig
+      key: kubeconfig
+
+---
+# # https://artifacthub.io/packages/helm/ealenn/echo-server
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: echo-server
+spec:
+  forProvider:
+    chart:
+      name: echo-server
+      repository: https://ealenn.github.io/charts
+      version: 0.5.0
+    namespace: echo-server
+    values:
+      ingress:
+        enabled: "true"	
+        ingressClassName: traefik
+        hosts: 
+          - host: echo-server.env-yellow.appfactory.local
+            paths: 
+              - "/"
+  providerConfigRef:
+    name: provider-helm

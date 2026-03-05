@@ -1,0 +1,24 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-green-app
+  namespace: argo-cd
+  labels:
+    clusterName: env-green
+spec:
+  project: default
+  sources:
+    - path: environments/env-green
+      repoURL: https://github.com/ekalabs/crossplane-vcluster-env.git
+      targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-cd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

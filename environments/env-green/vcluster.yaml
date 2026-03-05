@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-green-vcluster
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    clusterName: env-green
+spec:
+  project: default
+  sources:
+    - path: environments/env-green/ingress
+      repoURL: https://github.com/ekalabs/crossplane-vcluster-env.git
+      targetRevision: HEAD
+    
+    - repoURL: https://charts.loft.sh
+      targetRevision: 0.22.0
+      chart: vcluster
+      helm:
+        releaseName: env-green
+        values: |
+          pro: false
+          exportKubeConfig:
+            context: env-green
+            server: https://env-green.appfactory.local:32443
+            secret:
+              name: vc-env-green-ext
+              namespace: env-green
+          sync:
+            toHost:
+              ingresses:
+                enabled: true
+          controlPlane:
+            distro:
+              k3s:
+                enabled: true
+            proxy:
+              extraSANs:
+              - env-green
+              - env-green.env-green
+              - env-green.env-green.svc
+              - env-green.env-green.svc.cluster.local
+            statefulSet:
+              scheduling:
+                podManagementPolicy: OrderedReady
+                    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: env-green
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

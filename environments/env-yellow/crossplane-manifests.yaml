@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-yellow-crossplane-manifests
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  labels:
+    clusterName: env-yellow
+spec:
+  project: default
+  sources:
+    - path: crossplane-manifests/env-yellow
+      repoURL: https://github.com/ekalabs/crossplane-vcluster-env.git
+      targetRevision: HEAD
+  
+  destination:
+    server: https://env-yellow.env-yellow:443
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 30s
+        factor: 5
+        maxDuration: 3m0s
+
