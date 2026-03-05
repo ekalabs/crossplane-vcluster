@@ -7,4 +7,4 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  url: https://github.com/ekalabs/crossplane-vcluster-env.git
+  url: https://github.com/ekalabs/crossplane-vcluster.git

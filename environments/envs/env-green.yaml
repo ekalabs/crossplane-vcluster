@@ -10,7 +10,7 @@ spec:
   project: default
   sources:
     - path: environments/env-green
-      repoURL: https://github.com/ekalabs/crossplane-vcluster-env.git
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

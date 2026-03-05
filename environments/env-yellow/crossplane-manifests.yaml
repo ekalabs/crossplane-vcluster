@@ -12,7 +12,7 @@ spec:
   project: default
   sources:
     - path: crossplane-manifests/env-yellow
-      repoURL: https://github.com/ekalabs/crossplane-vcluster-env.git
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
   
   destination:
