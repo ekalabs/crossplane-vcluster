@@ -1,0 +1,7 @@
+service: platform/nginx
+version: 1.0.0
+image:
+  repository: nginx
+  tag: latest
+promotion:
+  mode: auto

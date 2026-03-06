@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - clusters/management/vcluster.yaml
+  - clusters/management/bootstrap.yaml
+  - clusters/management/crossplane-providers.yaml
+  - clusters/management/ingress.yaml
+  - clusters/green/vcluster.yaml
+  - clusters/green/bootstrap.yaml
+  - clusters/green/crossplane-providers.yaml
+  - clusters/green/ingress.yaml
+  - clusters/yellow/vcluster.yaml
+  - clusters/yellow/bootstrap.yaml
+  - clusters/yellow/crossplane-providers.yaml
+  - clusters/yellow/ingress.yaml

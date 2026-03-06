@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - identity/keycloak/release.yaml
+  - policies/kyverno/kyverno-role.yaml
+  - policies/kyverno/kyverno-secret-sync.yaml
+  - rbac/baseline/providers-rbac.yaml

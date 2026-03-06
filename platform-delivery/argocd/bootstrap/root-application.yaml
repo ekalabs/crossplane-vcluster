@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: environments
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - path: environments/envs
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+      targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-cd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
