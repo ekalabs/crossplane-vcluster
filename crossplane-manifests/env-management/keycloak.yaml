@@ -1,0 +1,35 @@
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: provider-helm
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: vcluster-kubeconfig
+      key: kubeconfig
+
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: keycloak
+spec:
+  forProvider:
+    chart:
+      name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 24.9.0
+    namespace: keycloak
+    values:
+      auth:
+        adminUser: admin
+        adminPassword: change-me
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        hostname: keycloak.env-management.appfactory.local
+  providerConfigRef:
+    name: provider-helm
