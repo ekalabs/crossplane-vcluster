@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   sources:
-    - path: environments/env-management/ingress
+    - path: platform-infra/clusters/management/ingress
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
 

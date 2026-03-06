@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         revision: HEAD
         directories:
-          - path: crossplane-manifests/env-yellow/apps/*/*
+          - path: apps/*/*
   template:
     metadata:
       name: yellow-{{path.basename}}
@@ -20,7 +20,7 @@ spec:
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         targetRevision: HEAD
-        path: '{{path.path}}'
+        path: '{{path.path}}/k8s'
       destination:
         server: https://env-yellow.env-yellow:443
         namespace: crossplane-system

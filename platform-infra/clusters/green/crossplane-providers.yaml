@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default
   sources:
-    - path: environments/env-green/crossplane-providers
+    - path: platform-infra/clusters/green/crossplane-providers
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
   

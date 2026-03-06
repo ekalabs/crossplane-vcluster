@@ -4,12 +4,12 @@ resources:
   - clusters/management/vcluster.yaml
   - clusters/management/bootstrap.yaml
   - clusters/management/crossplane-providers.yaml
-  - clusters/management/ingress.yaml
+  - clusters/management/ingress/ingress.yaml
   - clusters/green/vcluster.yaml
   - clusters/green/bootstrap.yaml
   - clusters/green/crossplane-providers.yaml
-  - clusters/green/ingress.yaml
+  - clusters/green/ingress/ingress.yaml
   - clusters/yellow/vcluster.yaml
   - clusters/yellow/bootstrap.yaml
   - clusters/yellow/crossplane-providers.yaml
-  - clusters/yellow/ingress.yaml
+  - clusters/yellow/ingress/ingress.yaml
