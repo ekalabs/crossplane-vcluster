@@ -21,7 +21,7 @@ spec:
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         targetRevision: HEAD
-        path: '{{path.path}}'
+        path: '{{path}}'
       destination:
         server: https://env-management.env-management:443
         namespace: crossplane-system
