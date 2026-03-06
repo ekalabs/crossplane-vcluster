@@ -41,6 +41,9 @@ spec:
       auth:
         adminUser: admin
         adminPassword: change-me
+      extraEnvVars:
+        - name: KEYCLOAK_HOSTNAME
+          value: http://keycloak.env-management.appfactory.local:32080/
       ingress:
         enabled: true
         ingressClassName: traefik
