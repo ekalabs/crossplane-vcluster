@@ -10,6 +10,7 @@ spec:
         revision: HEAD
         directories:
           - path: platform-security/identity/*
+          - path: platform-security/secrets/*
   template:
     metadata:
       name: mgmt-{{path.basename}}
