@@ -20,7 +20,7 @@ spec:
   forProvider:
     chart:
       name: keycloak
-      repository: https://charts.bitnami.com/bitnami
+      repository: oci://registry-1.docker.io/bitnamicharts
       version: 24.9.0
     namespace: keycloak
     values:
