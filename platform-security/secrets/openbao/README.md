@@ -8,3 +8,5 @@ Primary endpoint:
 Notes:
 - ProviderConfig `provider-helm` must be available in `env-management` control plane.
 - This is the shared secrets service for `green` and `yellow` policy domains.
+- `server.dev.enabled: true` is set to auto-initialize/unseal on startup for this lab environment.
+- `devRootToken` is `root`.
