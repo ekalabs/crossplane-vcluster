@@ -5,11 +5,25 @@ resources:
   - clusters/management/bootstrap.yaml
   - clusters/management/crossplane-providers.yaml
   - clusters/management/ingress/ingress.yaml
-  - clusters/green/vcluster.yaml
-  - clusters/green/bootstrap.yaml
-  - clusters/green/crossplane-providers.yaml
-  - clusters/green/ingress/ingress.yaml
-  - clusters/yellow/vcluster.yaml
-  - clusters/yellow/bootstrap.yaml
-  - clusters/yellow/crossplane-providers.yaml
-  - clusters/yellow/ingress/ingress.yaml
+  - clusters/preview/vcluster.yaml
+  - clusters/preview/bootstrap.yaml
+  - clusters/preview/crossplane-providers.yaml
+  - clusters/preview/ingress/ingress.yaml
+  - clusters/qa/vcluster.yaml
+  - clusters/qa/bootstrap.yaml
+  - clusters/qa/crossplane-providers.yaml
+  - clusters/qa/ingress/ingress.yaml
+  - clusters/stage/vcluster.yaml
+  - clusters/stage/bootstrap.yaml
+  - clusters/stage/crossplane-providers.yaml
+  - clusters/stage/ingress/ingress.yaml
+  - clusters/prodlike/vcluster.yaml
+  - clusters/prodlike/bootstrap.yaml
+  - clusters/prodlike/crossplane-providers.yaml
+  - clusters/prodlike/ingress/ingress.yaml
+  - clusters/prod/vcluster.yaml
+  - clusters/prod/bootstrap.yaml
+  - clusters/prod/crossplane-providers.yaml
+  - clusters/prod/ingress/ingress.yaml
+  - crossplane/xenvironments/xrd.yaml
+  - crossplane/xenvironments/composition.yaml

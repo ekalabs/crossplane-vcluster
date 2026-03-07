@@ -2,21 +2,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: env-yellow-crossplane-providers
+  name: env-preview-crossplane-providers
   namespace: argo-cd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
   labels:
-    clusterName: env-yellow
+    clusterName: env-preview
 spec:
   project: default
   sources:
-    - path: platform-infra/clusters/yellow/crossplane-providers
+    - path: platform-infra/clusters/preview/crossplane-providers
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
   
   destination:
-    server: https://env-yellow.env-yellow:443
+    server: https://env-preview.env-preview:443
     namespace: crossplane-system
   syncPolicy:
     automated:

@@ -2,24 +2,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: env-management-bootstrap
+  name: env-stage-crossplane-providers
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
   labels:
-    clusterName: env-management
+    clusterName: env-stage
 spec:
   project: default
   sources:
-    - chart: crossplane
-      repoURL: https://charts.crossplane.io/stable
-      targetRevision: 1.18.2
-    - path: platform-infra/common
+    - path: platform-infra/clusters/stage/crossplane-providers
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
-
+  
   destination:
-    server: https://env-management.env-management:443
+    server: https://env-stage.env-stage:443
     namespace: crossplane-system
   syncPolicy:
     automated:

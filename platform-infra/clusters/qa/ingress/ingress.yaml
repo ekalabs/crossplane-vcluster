@@ -2,17 +2,17 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: env-yellow-api-ingress
-  namespace: env-yellow
+  name: env-qa-api-ingress
+  namespace: env-qa
 spec:
   entryPoints:
     - websecure
   routes:
-  - match: HostSNI(`env-yellow.appfactory.local`)
+  - match: HostSNI(`env-qa.appfactory.local`)
     priority: 10
     services:
-    - name: env-yellow
-      namespace: env-yellow
+    - name: env-qa
+      namespace: env-qa
       port: 443
   tls:
     passthrough: true

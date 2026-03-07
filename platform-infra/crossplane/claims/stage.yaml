@@ -1,0 +1,9 @@
+apiVersion: platform.appfactory.io/v1alpha1
+kind: Environment
+metadata:
+  name: stage
+spec:
+  parameters:
+    name: stage
+    type: stage
+    owner: platform

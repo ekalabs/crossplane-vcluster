@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: env-green-vcluster
+  name: env-preview-vcluster
   namespace: argo-cd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   labels:
-    clusterName: env-green
+    clusterName: env-preview
 spec:
   project: default
   sources:
-    - path: platform-infra/clusters/green/ingress
+    - path: platform-infra/clusters/preview/ingress
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
     
@@ -18,15 +18,15 @@ spec:
       targetRevision: 0.22.0
       chart: vcluster
       helm:
-        releaseName: env-green
+        releaseName: env-preview
         values: |
           pro: false
           exportKubeConfig:
-            context: env-green
-            server: https://env-green.appfactory.local:32443
+            context: env-preview
+            server: https://env-preview.appfactory.local:32443
             secret:
-              name: vc-env-green-ext
-              namespace: env-green
+              name: vc-env-preview-ext
+              namespace: env-preview
           sync:
             toHost:
               ingresses:
@@ -37,17 +37,17 @@ spec:
                 enabled: true
             proxy:
               extraSANs:
-              - env-green
-              - env-green.env-green
-              - env-green.env-green.svc
-              - env-green.env-green.svc.cluster.local
+              - env-preview
+              - env-preview.env-preview
+              - env-preview.env-preview.svc
+              - env-preview.env-preview.svc.cluster.local
             statefulSet:
               scheduling:
                 podManagementPolicy: OrderedReady
                     
   destination:
     server: https://kubernetes.default.svc
-    namespace: env-green
+    namespace: env-preview
   syncPolicy:
     automated:
       prune: true

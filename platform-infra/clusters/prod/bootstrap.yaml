@@ -2,12 +2,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: env-management-bootstrap
+  name: env-prod-bootstrap
   namespace: argo-cd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   labels:
-    clusterName: env-management
+    clusterName: env-prod
 spec:
   project: default
   sources:
@@ -17,9 +17,9 @@ spec:
     - path: platform-infra/common
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
-
+  
   destination:
-    server: https://env-management.env-management:443
+    server: https://env-prod.env-prod:443
     namespace: crossplane-system
   syncPolicy:
     automated:

@@ -2,21 +2,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: env-green-crossplane-providers
+  name: env-prodlike-bootstrap
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
   labels:
-    clusterName: env-green
+    clusterName: env-prodlike
 spec:
   project: default
   sources:
-    - path: platform-infra/clusters/green/crossplane-providers
+    - chart: crossplane
+      repoURL: https://charts.crossplane.io/stable
+      targetRevision: 1.18.2
+    - path: platform-infra/common
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
       targetRevision: HEAD
   
   destination:
-    server: https://env-green.env-green:443
+    server: https://env-prodlike.env-prodlike:443
     namespace: crossplane-system
   syncPolicy:
     automated:

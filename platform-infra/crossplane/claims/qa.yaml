@@ -1,0 +1,9 @@
+apiVersion: platform.appfactory.io/v1alpha1
+kind: Environment
+metadata:
+  name: qa
+spec:
+  parameters:
+    name: qa
+    type: qa
+    owner: platform
