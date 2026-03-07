@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: env-yellow-apps
+  name: env-stage-apps
   namespace: argo-cd
 spec:
   generators:
@@ -12,9 +12,9 @@ spec:
           - path: apps/*/*
   template:
     metadata:
-      name: yellow-{{path.basename}}
+      name: stage-{{path.basename}}
       labels:
-        clusterName: env-yellow
+        clusterName: env-stage
     spec:
       project: default
       source:
@@ -22,7 +22,7 @@ spec:
         targetRevision: HEAD
         path: '{{path}}/k8s'
       destination:
-        server: https://env-yellow.env-yellow:443
+        server: https://env-stage.env-stage:443
         namespace: crossplane-system
       syncPolicy:
         automated:

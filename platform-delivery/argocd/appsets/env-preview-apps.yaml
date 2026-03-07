@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-preview-apps
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+        revision: HEAD
+        directories:
+          - path: apps/*/*
+  template:
+    metadata:
+      name: preview-{{path.basename}}
+      labels:
+        clusterName: env-preview
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+        targetRevision: HEAD
+        path: '{{path}}/k8s'
+      destination:
+        server: https://env-preview.env-preview:443
+        namespace: crossplane-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

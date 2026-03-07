@@ -1,0 +1,5 @@
+service: platform/nginx
+image:
+  digest: sha256:REPLACE_ME
+version: 1.0.0
+promotedTo: qa

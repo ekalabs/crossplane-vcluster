@@ -2,5 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - env-management-components.yaml
-  - env-green-apps.yaml
-  - env-yellow-apps.yaml
+  - env-preview-apps.yaml
+  - env-qa-apps.yaml
+  - env-stage-apps.yaml
+  - env-prodlike-apps.yaml
+  - env-prod-apps.yaml
