@@ -8,11 +8,11 @@ spec:
     - git:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         revision: HEAD
-        directories:
-          - path: apps/*/*
+        files:
+          - path: environment-config/preview/services/*.yaml
   template:
     metadata:
-      name: preview-{{path.basename}}
+      name: preview-{{appName}}
       labels:
         clusterName: env-preview
     spec:
@@ -20,10 +20,10 @@ spec:
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         targetRevision: HEAD
-        path: '{{path}}/k8s'
+        path: '{{servicePath}}/k8s'
       destination:
         server: https://env-preview.env-preview:443
-        namespace: crossplane-system
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true

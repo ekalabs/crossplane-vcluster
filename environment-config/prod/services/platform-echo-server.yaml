@@ -1,0 +1,4 @@
+appName: platform-echo-server
+service: platform/echo-server
+servicePath: apps/platform/echo-server
+namespace: crossplane-system

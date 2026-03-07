@@ -5,14 +5,23 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - git:
-        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        revision: HEAD
-        directories:
-          - path: apps/*/*
+    - merge:
+        mergeKeys:
+          - service
+        generators:
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: HEAD
+              files:
+                - path: environment-config/qa/services/*.yaml
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: HEAD
+              files:
+                - path: promotion-repo/qa/*.yaml
   template:
     metadata:
-      name: qa-{{path.basename}}
+      name: qa-{{appName}}
       labels:
         clusterName: env-qa
     spec:
@@ -20,10 +29,10 @@ spec:
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
         targetRevision: HEAD
-        path: '{{path}}/k8s'
+        path: '{{servicePath}}/k8s'
       destination:
         server: https://env-qa.env-qa:443
-        namespace: crossplane-system
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true

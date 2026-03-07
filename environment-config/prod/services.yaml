@@ -1,5 +1,0 @@
-services:
-  - name: platform/nginx
-    valuesFile: apps/platform/nginx/deploy/values-prod.yaml
-  - name: platform/echo-server
-    valuesFile: apps/platform/echo-server/deploy/values-prod.yaml

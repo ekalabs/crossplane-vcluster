@@ -1,0 +1,4 @@
+appName: platform-nginx
+service: platform/nginx
+servicePath: apps/platform/nginx
+namespace: crossplane-system

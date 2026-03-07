@@ -7,8 +7,9 @@
 - [ ] Remove remaining legacy `green/yellow` runtime assumptions from app manifests.
   - `apps/platform/nginx/k8s/release.yaml` still points to `nginx.env-green.appfactory.local`.
   - `apps/platform/echo-server/k8s/release.yaml` still points to `echo-server.env-yellow.appfactory.local`.
-- [ ] Wire ApplicationSets to promotion/environment config inputs (not raw `apps/*/*` scan).
-  - Current appsets deploy directly from `apps/*/*` and ignore `environment-config/` + `promotion-repo/`.
+- [x] Wire ApplicationSets to promotion/environment config inputs (not raw `apps/*/*` scan).
+  - Preview now reads `environment-config/preview/services/*.yaml`.
+  - QA/Stage/ProdLike/Prod now merge `environment-config/<env>/services/*.yaml` with `promotion-repo/<env>/*.yaml` on `service`.
 
 ## P1 - Security and Governance Hardening
 
