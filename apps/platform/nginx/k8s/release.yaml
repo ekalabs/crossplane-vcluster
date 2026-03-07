@@ -96,7 +96,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: nginx.env-green.appfactory.local
+    - host: nginx.platform.appfactory.local
       http:
         paths:
           - path: /

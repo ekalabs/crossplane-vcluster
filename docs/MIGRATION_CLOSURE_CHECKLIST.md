@@ -4,9 +4,8 @@
 
 - [x] Fix broken delivery kustomization references.
   - Updated `platform-delivery/kustomization.yaml` to use preview/qa/stage/prodlike/prod appsets.
-- [ ] Remove remaining legacy `green/yellow` runtime assumptions from app manifests.
-  - `apps/platform/nginx/k8s/release.yaml` still points to `nginx.env-green.appfactory.local`.
-  - `apps/platform/echo-server/k8s/release.yaml` still points to `echo-server.env-yellow.appfactory.local`.
+- [x] Remove remaining legacy `green/yellow` runtime assumptions from app manifests.
+  - Updated ingress hosts to environment-neutral platform domains.
 - [x] Wire ApplicationSets to promotion/environment config inputs (not raw `apps/*/*` scan).
   - Preview now reads `environment-config/preview/services/*.yaml`.
   - QA/Stage/ProdLike/Prod now merge `environment-config/<env>/services/*.yaml` with `promotion-repo/<env>/*.yaml` on `service`.
