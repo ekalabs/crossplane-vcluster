@@ -1,7 +1,0 @@
-service: platform/echo-server
-version: 1.0.0
-image:
-  repository: ealen/echo-server
-  tag: latest
-promotion:
-  mode: auto
