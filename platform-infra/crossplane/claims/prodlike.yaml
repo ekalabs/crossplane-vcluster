@@ -1,0 +1,9 @@
+apiVersion: platform.appfactory.io/v1alpha1
+kind: Environment
+metadata:
+  name: prodlike
+spec:
+  parameters:
+    name: prodlike
+    type: prodlike
+    owner: platform

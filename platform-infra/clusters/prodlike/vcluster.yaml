@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-prodlike-vcluster
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    clusterName: env-prodlike
+spec:
+  project: default
+  sources:
+    - path: platform-infra/clusters/prodlike/ingress
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+      targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+    
+    - repoURL: https://charts.loft.sh
+      targetRevision: 0.22.0
+      chart: vcluster
+      helm:
+        releaseName: env-prodlike
+        values: |
+          pro: false
+          exportKubeConfig:
+            context: env-prodlike
+            server: https://env-prodlike.appfactory.local:32443
+            secret:
+              name: vc-env-prodlike-ext
+              namespace: env-prodlike
+          sync:
+            toHost:
+              ingresses:
+                enabled: true
+          controlPlane:
+            distro:
+              k3s:
+                enabled: true
+            proxy:
+              extraSANs:
+              - env-prodlike
+              - env-prodlike.env-prodlike
+              - env-prodlike.env-prodlike.svc
+              - env-prodlike.env-prodlike.svc.cluster.local
+            statefulSet:
+              scheduling:
+                podManagementPolicy: OrderedReady
+                    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: env-prodlike
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

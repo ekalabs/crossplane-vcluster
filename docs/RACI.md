@@ -24,7 +24,7 @@
 - Consulted: DevOps, Security
 - Informed: Infra
 
-## Environment promotion (green -> yellow)
+## Environment promotion (preview -> qa -> stage -> prodlike -> prod)
 - Responsible: DevOps automation
 - Accountable: Product/Service owner
 - Consulted: Security (high risk), Infra (platform-impacting changes)

@@ -7,10 +7,11 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        revision: HEAD
+        revision: feat/argo-crossplane-preview-qa-stage-prod-migration
         directories:
           - path: platform-security/identity/*
           - path: platform-security/secrets/*
+          - path: developer-platform/observability
   template:
     metadata:
       name: mgmt-{{path.basename}}
@@ -20,7 +21,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: HEAD
+        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
         path: '{{path}}'
       destination:
         server: https://env-management.env-management:443

@@ -41,6 +41,16 @@ spec:
       auth:
         adminUser: admin
         adminPassword: change-me
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+      service:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "8080"
+          prometheus.io/path: /metrics
       extraEnvVars:
         - name: KEYCLOAK_HOSTNAME
           value: http://keycloak.env-management.appfactory.local:32080/

@@ -11,7 +11,7 @@ spec:
   sources:
     - path: platform-infra
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-cd

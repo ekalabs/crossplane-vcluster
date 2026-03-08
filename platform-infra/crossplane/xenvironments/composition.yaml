@@ -1,0 +1,84 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xenvironment-kubernetes
+  labels:
+    provider: kubernetes
+spec:
+  compositeTypeRef:
+    apiVersion: platform.appfactory.io/v1alpha1
+    kind: XEnvironment
+  resources:
+    - name: namespace
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: provider-kubernetes
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: placeholder
+                labels:
+                  platform.appfactory.io/environment-type: placeholder
+                  platform.appfactory.io/owner: placeholder
+      patches:
+        - fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.manifest.metadata.name
+        - fromFieldPath: spec.parameters.type
+          toFieldPath: spec.forProvider.manifest.metadata.labels[platform.appfactory.io/environment-type]
+        - fromFieldPath: spec.parameters.owner
+          toFieldPath: spec.forProvider.manifest.metadata.labels[platform.appfactory.io/owner]
+          policy:
+            fromFieldPath: Optional
+
+    - name: default-network-policy
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: provider-kubernetes
+          forProvider:
+            manifest:
+              apiVersion: networking.k8s.io/v1
+              kind: NetworkPolicy
+              metadata:
+                name: default-deny-all
+                namespace: placeholder
+              spec:
+                podSelector: {}
+                policyTypes:
+                  - Ingress
+                  - Egress
+      patches:
+        - fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.manifest.metadata.namespace
+
+    - name: resource-quota
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: provider-kubernetes
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: ResourceQuota
+              metadata:
+                name: default-quota
+                namespace: placeholder
+              spec:
+                hard:
+                  pods: "20"
+                  requests.cpu: "4"
+                  requests.memory: 8Gi
+                  limits.cpu: "8"
+                  limits.memory: 16Gi
+      patches:
+        - fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.manifest.metadata.namespace

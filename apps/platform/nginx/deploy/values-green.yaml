@@ -1,6 +1,0 @@
-image:
-  repository: nginx
-  tag: latest
-env: green
-oidc:
-  enabled: false

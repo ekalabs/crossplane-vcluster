@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-observability-acl
+  namespace: argo-cd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: preview
+            server: https://env-preview.env-preview:443
+          - env: qa
+            server: https://env-qa.env-qa:443
+          - env: stage
+            server: https://env-stage.env-stage:443
+          - env: prodlike
+            server: https://env-prodlike.env-prodlike:443
+          - env: prod
+            server: https://env-prod.env-prod:443
+  template:
+    metadata:
+      name: '{{env}}-observability-acl'
+      labels:
+        clusterName: 'env-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+        path: platform-security/policies/network/observability-egress
+      destination:
+        server: '{{server}}'
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

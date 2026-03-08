@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-prod-apps
+  namespace: argo-cd
+spec:
+  generators:
+    - merge:
+        mergeKeys:
+          - service
+        generators:
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              files:
+                - path: environment-config/prod/services/*.yaml
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              files:
+                - path: promotion-repo/prod/*.yaml
+  template:
+    metadata:
+      name: prod-{{appName}}
+      labels:
+        clusterName: env-prod
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+        path: '{{servicePath}}/k8s'
+      destination:
+        server: https://env-prod.env-prod:443
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

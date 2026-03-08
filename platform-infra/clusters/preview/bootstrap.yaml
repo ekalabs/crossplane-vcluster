@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-preview-bootstrap
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    clusterName: env-preview
+spec:
+  project: default
+  sources:
+    - chart: crossplane
+      repoURL: https://charts.crossplane.io/stable
+      targetRevision: 1.18.2
+    - path: platform-infra/common
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+      targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+  
+  destination:
+    server: https://env-preview.env-preview:443
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 30s
+        factor: 5
+        maxDuration: 3m0s
+

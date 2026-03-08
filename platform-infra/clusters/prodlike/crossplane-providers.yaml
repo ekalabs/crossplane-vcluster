@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: env-prodlike-crossplane-providers
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  labels:
+    clusterName: env-prodlike
+spec:
+  project: default
+  sources:
+    - path: platform-infra/clusters/prodlike/crossplane-providers
+      repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+      targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+  
+  destination:
+    server: https://env-prodlike.env-prodlike:443
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 30s
+        factor: 5
+        maxDuration: 3m0s
+

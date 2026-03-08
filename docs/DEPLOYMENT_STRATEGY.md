@@ -21,6 +21,6 @@
 - ingress auth only as temporary or defense-in-depth
 
 5. Promotion model:
-- one-way promotion green -> yellow
+- one-way promotion preview -> qa -> stage -> prodlike -> prod
 - immutable version pinning
-- PR approvals required for yellow
+- PR approvals required for higher environments

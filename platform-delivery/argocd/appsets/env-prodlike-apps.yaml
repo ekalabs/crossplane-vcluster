@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-prodlike-apps
+  namespace: argo-cd
+spec:
+  generators:
+    - merge:
+        mergeKeys:
+          - service
+        generators:
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              files:
+                - path: environment-config/prodlike/services/*.yaml
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              files:
+                - path: promotion-repo/prodlike/*.yaml
+  template:
+    metadata:
+      name: prodlike-{{appName}}
+      labels:
+        clusterName: env-prodlike
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+        path: '{{servicePath}}/k8s'
+      destination:
+        server: https://env-prodlike.env-prodlike:443
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

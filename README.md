@@ -1,87 +1,52 @@
-# Crossplane vCluster Platform Workflow
+# Enterprise Platform Architecture (Argo + Crossplane)
 
-## Purpose
-This repository is organized by responsibility domains and synced by Argo CD using a platform app-of-apps model.
+This workspace implements a GitOps architecture with environment promotion:
+- Preview (ephemeral)
+- QA
+- Stage
+- ProdLike
+- Prod
 
-Top-level domains:
-- `platform-infra/`
-- `platform-security/`
-- `platform-delivery/`
-- `apps/`
-- `environments-config/`
-- `docs/`
+Core control planes:
+- Argo CD: deployment orchestration and app-of-apps
+- Crossplane: environment API/composition and provider-driven provisioning
 
-## Argo CD Wiring
+## Top-Level Layout
+- `platform-infra/`: clusters, networking, ingress, storage, observability, Crossplane environment APIs
+- `platform-security/`: Keycloak, OpenBao, Kyverno/OPA-style policy and RBAC baseline
+- `platform-delivery/`: Argo appsets/projects/bootstrap, deployment templates, reusable pipeline docs
+- `developer-platform/`: Gitea, SonarQube, CI runner scaffolding
+- `apps/`: service workloads (code/manifests/values)
+- `environment-config/`: overlays for preview/qa/stage/prodlike/prod
+- `promotion-repo/`: immutable promotion records qa->stage->prodlike->prod
+
+## Argo Control Flow
 1. Root app: `environments.yaml`
-- Syncs `environments/envs` into `argo-cd`.
+2. Platform apps from `environments/envs/`:
+   - `platform-infra`
+   - `platform-security`
+   - `platform-delivery`
+3. ApplicationSets from `platform-delivery/argocd/appsets/` deploy workloads to:
+   - `env-preview`
+   - `env-qa`
+   - `env-stage`
+   - `env-prodlike`
+   - `env-prod`
 
-2. Platform apps from `environments/envs/`
-- `platform-infra.yaml` (sync-wave `1`)
-- `platform-security.yaml` (sync-wave `2`)
-- `platform-delivery.yaml` (sync-wave `3`)
+## Crossplane Environment API
+`platform-infra/crossplane/xenvironments/` includes:
+- `XEnvironment` XRD
+- `Composition` for baseline namespace controls (namespace, default-deny network policy, resource quota)
 
-3. Delivery app (`platform-delivery/`)
-- Deploys ApplicationSets from `platform-delivery/argocd/appsets/`:
-  - `env-management-components`
-  - `env-green-apps`
-  - `env-yellow-apps`
+Claims examples are in:
+- `platform-infra/crossplane/claims/`
 
-4. ApplicationSets generate env-specific Applications
-- Management components from `platform-security/identity/*`
-- Green and Yellow apps from `apps/*/*/k8s`
+## Promotion Model
+- Build once, publish immutable artifact digest.
+- Promote by PR approvals in `promotion-repo/`:
+  - `qa` -> `stage` -> `prodlike` -> `prod`
+- No rebuild between environments.
 
-## Repository Structure
-```text
-.
-├── environments.yaml
-├── environments/
-│   └── envs/
-│       ├── platform-infra.yaml
-│       ├── platform-security.yaml
-│       └── platform-delivery.yaml
-├── platform-infra/
-│   ├── kustomization.yaml
-│   ├── clusters/{management,green,yellow}/
-│   ├── network/
-│   ├── dns/
-│   ├── ingress/
-│   ├── storage/
-│   └── observability/
-├── platform-security/
-│   ├── kustomization.yaml
-│   ├── identity/keycloak/
-│   ├── policies/kyverno/
-│   └── rbac/{baseline,exceptions}/
-├── platform-delivery/
-│   ├── kustomization.yaml
-│   ├── argocd/{bootstrap,projects,appsets}/
-│   ├── templates/{service-helm,oidc,ingress-auth}/
-│   └── pipelines/reusable/
-├── apps/
-│   └── <team>/<service>/
-│       ├── src/
-│       ├── k8s/
-│       └── deploy/
-│           ├── values-dev.yaml
-│           ├── values-green.yaml
-│           └── values-yellow.yaml
-├── environments-config/
-│   ├── green/services/
-│   └── yellow/services/
-└── docs/
-    ├── RACI.md
-    └── DEPLOYMENT_STRATEGY.md
-```
-
-## Ownership Boundaries
-- Infra: cluster lifecycle, networking, ingress, storage, DNS, observability (`platform-infra/`)
-- Security: Keycloak/OIDC standards, policy bundles, RBAC baseline and exceptions (`platform-security/`)
-- DevOps/Platform: Argo CD, appsets, templates, reusable pipelines (`platform-delivery/`)
-- Dev teams: service code/config, app-native OIDC, runtime SLOs (`apps/`)
-
-## Deployment Strategy
-- Bootstrap order: `infra -> security -> delivery -> apps`
-- CI gates: tests, lint, image scan, policy check, manifest validation
-- CD gates: admission policy, drift detection, signed image/provenance, rollout health
-- Prefer app-native OIDC; ingress auth is temporary or defense-in-depth
-- Promotion model: one-way `green -> yellow`, immutable pins, PR approvals for yellow
+## Notes
+- Preview environments include TTL metadata via environment claims template.
+- Security/identity applies across all environments through Keycloak/OpenBao/policy bundles.

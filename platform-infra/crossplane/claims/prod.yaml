@@ -1,0 +1,9 @@
+apiVersion: platform.appfactory.io/v1alpha1
+kind: Environment
+metadata:
+  name: prod
+spec:
+  parameters:
+    name: prod
+    type: prod
+    owner: platform

@@ -29,7 +29,7 @@ spec:
         enabled: "true"	
         ingressClassName: traefik
         hosts: 
-          - host: echo-server.env-yellow.appfactory.local
+          - host: echo-server.platform.appfactory.local
             paths: 
               - "/"
   providerConfigRef:

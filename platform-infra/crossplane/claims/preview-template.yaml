@@ -1,0 +1,10 @@
+apiVersion: platform.appfactory.io/v1alpha1
+kind: Environment
+metadata:
+  name: preview-pr-123
+spec:
+  parameters:
+    name: preview-pr-123
+    type: preview
+    owner: dev-user
+    ttlHours: 24

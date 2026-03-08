@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-observability-agents
+  namespace: argo-cd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: preview
+            server: https://env-preview.env-preview:443
+          - env: qa
+            server: https://env-qa.env-qa:443
+          - env: stage
+            server: https://env-stage.env-stage:443
+          - env: prodlike
+            server: https://env-prodlike.env-prodlike:443
+          - env: prod
+            server: https://env-prod.env-prod:443
+  template:
+    metadata:
+      name: '{{env}}-prometheus-agent'
+      labels:
+        clusterName: 'env-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://prometheus-community.github.io/helm-charts
+        chart: prometheus
+        targetRevision: 26.0.0
+        helm:
+          releaseName: prometheus-agent
+          values: |
+            alertmanager:
+              enabled: false
+            kube-state-metrics:
+              enabled: true
+            prometheus-pushgateway:
+              enabled: false
+            server:
+              fullnameOverride: prometheus-agent
+              persistentVolume:
+                enabled: false
+              global:
+                scrape_interval: 30s
+                external_labels:
+                  environment: {{env}}
+              extraFlags:
+                - enable-feature=agent
+              service:
+                annotations:
+                  prometheus.io/scrape: "true"
+                  prometheus.io/port: "9090"
+                  prometheus.io/path: /metrics
+              remoteWrite:
+                - url: http://prometheus.env-management.appfactory.local/api/v1/write
+      destination:
+        server: '{{server}}'
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
