@@ -13,6 +13,13 @@ spec:
     values:
       grafana:
         adminPassword: change-me
+        defaultDashboardsEnabled: true
+        sidecar:
+          dashboards:
+            enabled: true
+            searchNamespace: ALL
+          datasources:
+            enabled: true
         ingress:
           enabled: true
           ingressClassName: traefik
@@ -24,5 +31,107 @@ spec:
           ingressClassName: traefik
           hosts:
             - prometheus.env-management.appfactory.local
+        prometheusSpec:
+          serviceMonitorSelector: {}
+          serviceMonitorNamespaceSelector: {}
+          podMonitorSelector: {}
+          podMonitorNamespaceSelector: {}
+          probeSelector: {}
+          probeNamespaceSelector: {}
+          ruleSelector: {}
+          ruleNamespaceSelector: {}
+          additionalScrapeConfigs:
+            - job_name: kubernetes-endpoints-named-metrics
+              kubernetes_sd_configs:
+                - role: endpoints
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_endpoint_port_name]
+                  action: keep
+                  regex: .*metrics.*
+                - action: labelmap
+                  regex: __meta_kubernetes_service_label_(.+)
+                - source_labels: [__meta_kubernetes_namespace]
+                  action: replace
+                  target_label: kubernetes_namespace
+                - source_labels: [__meta_kubernetes_service_name]
+                  action: replace
+                  target_label: kubernetes_name
+            - job_name: kubernetes-pods-named-metrics
+              kubernetes_sd_configs:
+                - role: pod
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_container_port_name]
+                  action: keep
+                  regex: .*metrics.*
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_label_(.+)
+                - source_labels: [__meta_kubernetes_namespace]
+                  action: replace
+                  target_label: kubernetes_namespace
+                - source_labels: [__meta_kubernetes_pod_name]
+                  action: replace
+                  target_label: kubernetes_pod_name
+            - job_name: kubernetes-services-metrics
+              kubernetes_sd_configs:
+                - role: endpoints
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+                  action: keep
+                  regex: true
+                - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+                  action: replace
+                  regex: (https?)
+                  target_label: __scheme__
+                - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+                  action: replace
+                  regex: (.+)
+                  target_label: __metrics_path__
+                - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+                  action: replace
+                  regex: ([^:]+)(?::\d+)?;(\d+)
+                  replacement: $1:$2
+                  target_label: __address__
+                - action: labelmap
+                  regex: __meta_kubernetes_service_label_(.+)
+                - source_labels: [__meta_kubernetes_namespace]
+                  action: replace
+                  target_label: kubernetes_namespace
+                - source_labels: [__meta_kubernetes_service_name]
+                  action: replace
+                  target_label: kubernetes_name
+            - job_name: kubernetes-pods-metrics
+              kubernetes_sd_configs:
+                - role: pod
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                  action: keep
+                  regex: true
+                - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scheme]
+                  action: replace
+                  regex: (https?)
+                  target_label: __scheme__
+                - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+                  action: replace
+                  regex: (.+)
+                  target_label: __metrics_path__
+                - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                  action: replace
+                  regex: ([^:]+)(?::\d+)?;(\d+)
+                  replacement: $1:$2
+                  target_label: __address__
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_label_(.+)
+                - source_labels: [__meta_kubernetes_namespace]
+                  action: replace
+                  target_label: kubernetes_namespace
+                - source_labels: [__meta_kubernetes_pod_name]
+                  action: replace
+                  target_label: kubernetes_pod_name
+      kubeStateMetrics:
+        enabled: true
+      nodeExporter:
+        enabled: true
+      alertmanager:
+        enabled: true
   providerConfigRef:
     name: provider-helm

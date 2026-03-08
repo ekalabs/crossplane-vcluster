@@ -33,6 +33,11 @@ logs:
 
 metrics:
   addInternals: true
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    entryPoint: traefik
 
 tracing:
   addInternals: true
