@@ -4,3 +4,4 @@ Shared developer tooling deployed in platform cluster:
 - gitea
 - sonarqube
 - ci-runners
+- observability (prometheus + grafana)

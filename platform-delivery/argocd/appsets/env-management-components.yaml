@@ -11,6 +11,7 @@ spec:
         directories:
           - path: platform-security/identity/*
           - path: platform-security/secrets/*
+          - path: developer-platform/observability
   template:
     metadata:
       name: mgmt-{{path.basename}}

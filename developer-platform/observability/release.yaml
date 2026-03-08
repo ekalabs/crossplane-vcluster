@@ -1,0 +1,28 @@
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: kube-prometheus-stack
+spec:
+  forProvider:
+    chart:
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 62.6.0
+    namespace: monitoring
+    values:
+      grafana:
+        adminPassword: change-me
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hosts:
+            - grafana.env-management.appfactory.local
+      prometheus:
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hosts:
+            - prometheus.env-management.appfactory.local
+  providerConfigRef:
+    name: provider-helm
