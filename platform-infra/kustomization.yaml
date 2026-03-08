@@ -25,5 +25,3 @@ resources:
   - clusters/prod/bootstrap.yaml
   - clusters/prod/crossplane-providers.yaml
   - clusters/prod/ingress/ingress.yaml
-  - crossplane/xenvironments/xrd.yaml
-  - crossplane/xenvironments/composition.yaml

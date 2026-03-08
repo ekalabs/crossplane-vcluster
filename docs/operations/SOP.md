@@ -118,3 +118,7 @@ kubectl -n argo-cd delete application green-nginx green-echo-server yellow-nginx
 After branch is merged to default branch:
 1. Set pinned branch revisions back to `HEAD`.
 2. Commit and sync again.
+
+Note:
+- `platform-infra/kustomization.yaml` should only include resources valid on the destination cluster.
+- Do not include Crossplane XRD/Composition CRs unless Crossplane CRDs are installed on that cluster.
