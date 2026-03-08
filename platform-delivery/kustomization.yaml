@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - argocd/appsets/env-management-components.yaml
+  - argocd/appsets/env-observability-acl.yaml
   - argocd/appsets/env-observability-agents.yaml
   - argocd/appsets/env-preview-apps.yaml
   - argocd/appsets/env-qa-apps.yaml

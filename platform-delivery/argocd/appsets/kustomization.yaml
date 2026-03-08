@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - env-management-components.yaml
+  - env-observability-acl.yaml
   - env-observability-agents.yaml
   - env-preview-apps.yaml
   - env-qa-apps.yaml
