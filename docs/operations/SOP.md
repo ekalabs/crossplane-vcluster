@@ -89,3 +89,32 @@ kubectl -n argo-cd get application <app-name> -o yaml
 ```
 2. Fix manifest or target cluster issue.
 3. Re-sync from Argo UI/CLI.
+
+## 7. Redeploy After Architecture Change
+
+When testing from a feature branch before merge:
+
+1. Pin Argo Git refs (`targetRevision`/`revision`) to the feature branch in:
+- `environments.yaml`
+- `environments/envs/*.yaml`
+- `platform-delivery/argocd/appsets/*.yaml`
+- `platform-infra/clusters/**/*.yaml` (Argo Application sources)
+2. Push branch.
+3. Apply root app:
+```bash
+kubectl apply -f environments.yaml
+```
+4. Force refresh:
+```bash
+kubectl -n argo-cd annotate application environments argocd.argoproj.io/refresh=hard --overwrite
+```
+5. Remove obsolete appsets/apps if migrating models:
+```bash
+kubectl -n argo-cd delete applicationset env-green-apps env-yellow-apps --ignore-not-found
+kubectl -n argo-cd delete application green-nginx green-echo-server yellow-nginx yellow-echo-server --ignore-not-found
+```
+6. Validate new appsets are present and healthy.
+
+After branch is merged to default branch:
+1. Set pinned branch revisions back to `HEAD`.
+2. Commit and sync again.
