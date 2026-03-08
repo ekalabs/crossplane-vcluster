@@ -1,3 +1,3 @@
 # platform/nginx
 
-Starter app skeleton for green/yellow deployment model.
+Starter app skeleton for preview/qa/stage/prodlike/prod deployment model.

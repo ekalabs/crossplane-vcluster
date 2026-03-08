@@ -1,9 +1,9 @@
 # platform-infra
 
-Owns vcluster creation, Traefik, base networking, external-dns, certificate plumbing.
+Owns vcluster creation, Traefik, base networking, DNS, certificate plumbing, storage, and observability foundations.
 
 ## Structure
-- `clusters/management`, `clusters/green`, `clusters/yellow`: cluster-level composition and lifecycle pointers.
-- `network/`, `dns/`, `ingress/`, `storage/`, `observability/`: shared infra capability domains.
-
-This folder is the target home for infra ownership. During migration, references point to current active manifests under `environments/`.
+- `clusters/management`, `clusters/preview`, `clusters/qa`, `clusters/stage`, `clusters/prodlike`, `clusters/prod`
+- `clusters/management/local-kind/`: local kind cluster bootstrap artifacts
+- `network/`, `dns/`, `ingress/`, `storage/`, `observability/`
+- `crossplane/`: environment API (`XEnvironment`) and compositions

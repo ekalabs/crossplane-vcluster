@@ -3,12 +3,8 @@
 ## P0 - Must Fix Now
 
 - [x] Fix broken delivery kustomization references.
-  - Updated `platform-delivery/kustomization.yaml` to use preview/qa/stage/prodlike/prod appsets.
 - [x] Remove remaining legacy `green/yellow` runtime assumptions from app manifests.
-  - Updated ingress hosts to environment-neutral platform domains.
 - [x] Wire ApplicationSets to promotion/environment config inputs (not raw `apps/*/*` scan).
-  - Preview now reads `environment-config/preview/services/*.yaml`.
-  - QA/Stage/ProdLike/Prod now merge `environment-config/<env>/services/*.yaml` with `promotion-repo/<env>/*.yaml` on `service`.
 
 ## P1 - Security and Governance Hardening
 
@@ -34,3 +30,9 @@
 ## Legacy Cleanup
 
 - [x] Remove deprecated `environments-config/` tree (old green/yellow promotion model).
+- [x] Move root bootstrap artifacts into platform-owned paths:
+  - `platform-infra/clusters/management/local-kind/cluster.yaml`
+  - `platform-infra/ingress/traefik/values-local-kind.yaml`
+  - `platform-delivery/argocd/bootstrap/values-local-kind.yaml`
+  - `platform-delivery/argocd/bootstrap/repository-secret.yaml`
+- [x] Remove obsolete root artifacts (`SOR.md`, `.DS_Store`, legacy green/yellow app values files).
