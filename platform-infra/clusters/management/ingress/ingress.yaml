@@ -17,5 +17,3 @@ spec:
       port: 443
   tls:
     passthrough: true
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
