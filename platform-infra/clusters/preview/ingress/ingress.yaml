@@ -4,6 +4,8 @@ kind: IngressRouteTCP
 metadata:
   name: env-preview-api-ingress
   namespace: env-preview
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   entryPoints:
     - websecure
@@ -15,4 +17,6 @@ spec:
       namespace: env-preview
       port: 443
   tls:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
     passthrough: true

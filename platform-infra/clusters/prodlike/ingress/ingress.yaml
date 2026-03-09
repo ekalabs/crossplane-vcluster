@@ -4,6 +4,8 @@ kind: IngressRouteTCP
 metadata:
   name: env-prodlike-api-ingress
   namespace: env-prodlike
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   entryPoints:
     - websecure
@@ -15,4 +17,6 @@ spec:
       namespace: env-prodlike
       port: 443
   tls:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
     passthrough: true
