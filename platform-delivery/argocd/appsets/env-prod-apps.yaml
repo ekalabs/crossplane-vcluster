@@ -11,12 +11,12 @@ spec:
         generators:
           - git:
               repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              revision: HEAD
               files:
                 - path: environment-config/prod/services/*.yaml
           - git:
               repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: feat/argo-crossplane-preview-qa-stage-prod-migration
+              revision: HEAD
               files:
                 - path: promotion-repo/prod/*.yaml
   template:
@@ -28,7 +28,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+        targetRevision: HEAD
         path: '{{servicePath}}/k8s'
       destination:
         server: https://env-prod.env-prod:443

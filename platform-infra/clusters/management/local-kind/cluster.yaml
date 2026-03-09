@@ -15,6 +15,10 @@ nodes:
         node-labels: "ingress-ready=true"
   extraPortMappings:
   - containerPort: 32080
+    hostPort: 80
+  - containerPort: 32443
+    hostPort: 443
+  - containerPort: 32080
     hostPort: 32080
   - containerPort: 32443
     hostPort: 32443

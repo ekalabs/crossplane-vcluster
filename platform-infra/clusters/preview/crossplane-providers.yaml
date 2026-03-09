@@ -13,7 +13,7 @@ spec:
   sources:
     - path: platform-infra/clusters/preview/crossplane-providers
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+      targetRevision: HEAD
   
   destination:
     server: https://env-preview.env-preview:443

@@ -26,7 +26,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: feat/argo-crossplane-preview-qa-stage-prod-migration
+        targetRevision: HEAD
         path: platform-security/policies/network/observability-egress
       destination:
         server: '{{server}}'
