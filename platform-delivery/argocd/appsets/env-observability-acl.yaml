@@ -27,7 +27,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: HEAD
+        targetRevision: main
         path: platform-security/policies/network/observability-egress
       destination:
         server: '{{server}}'

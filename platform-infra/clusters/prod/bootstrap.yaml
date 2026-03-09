@@ -16,7 +16,7 @@ spec:
       targetRevision: 1.18.2
     - path: platform-infra/common
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      targetRevision: main
   
   destination:
     server: https://env-prod.env-prod:443

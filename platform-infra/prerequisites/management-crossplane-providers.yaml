@@ -10,7 +10,7 @@ spec:
   source:
     path: platform-infra/clusters/management/crossplane-providers
     repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system

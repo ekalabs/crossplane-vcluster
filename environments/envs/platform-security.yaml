@@ -8,10 +8,14 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
+  info:
+    - name: dependsOn
+      value: management-kyverno-prereq
   sources:
     - path: platform-security
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      # Revision pin scaffold: use a release tag or commit SHA for prod promotion.
+      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-cd
@@ -21,4 +25,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
+      - SkipDryRunOnMissingResource=true

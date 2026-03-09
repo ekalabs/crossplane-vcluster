@@ -11,7 +11,8 @@ spec:
   sources:
     - path: platform-infra/prerequisites
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      # Revision pin scaffold: use a release tag or commit SHA for prod promotion.
+      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-cd

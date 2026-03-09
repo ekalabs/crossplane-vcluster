@@ -9,7 +9,7 @@ spec:
         generators:
           - git:
               repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: HEAD
+              revision: main
               directories:
                 - path: platform-security/identity/*
                 - path: platform-security/secrets/*
@@ -28,7 +28,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: HEAD
+        targetRevision: main
         path: '{{path}}'
       destination:
         server: '{{server}}'

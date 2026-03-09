@@ -13,7 +13,7 @@ spec:
   sources:
     - path: platform-infra/clusters/management/crossplane-providers
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      targetRevision: main
 
   destination:
     server: https://env-management.env-management:443

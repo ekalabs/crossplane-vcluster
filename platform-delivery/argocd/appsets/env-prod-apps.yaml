@@ -13,12 +13,12 @@ spec:
               generators:
                 - git:
                     repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-                    revision: HEAD
+                    revision: main
                     files:
                       - path: environment-config/prod/services/*.yaml
                 - git:
                     repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-                    revision: HEAD
+                    revision: main
                     files:
                       - path: promotion-repo/prod/*.yaml
           - clusters:
@@ -35,7 +35,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        targetRevision: HEAD
+        targetRevision: main
         path: '{{servicePath}}/k8s'
       destination:
         server: '{{server}}'

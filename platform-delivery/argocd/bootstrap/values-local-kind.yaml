@@ -8,3 +8,4 @@ server:
   ingress:
     enabled: true
     ingressClassName: traefik
+    hostname: argocd.appfactory.local

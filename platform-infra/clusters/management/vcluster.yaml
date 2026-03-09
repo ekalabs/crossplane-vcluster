@@ -12,7 +12,7 @@ spec:
   sources:
     - path: platform-infra/clusters/management/ingress
       repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-      targetRevision: HEAD
+      targetRevision: main
 
     - repoURL: https://charts.loft.sh
       targetRevision: 0.22.0
