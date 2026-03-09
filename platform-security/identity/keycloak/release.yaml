@@ -7,9 +7,9 @@ spec:
   credentials:
     source: Secret
     secretRef:
-      namespace: crossplane-system
-      name: vcluster-kubeconfig
-      key: kubeconfig
+      namespace: env-management
+      name: vc-env-management-ext
+      key: config
 
 ---
 apiVersion: helm.crossplane.io/v1beta1
