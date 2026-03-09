@@ -23,7 +23,7 @@ spec:
           pro: false
           exportKubeConfig:
             context: env-management
-            server: https://env-management.appfactory.local:32443
+            server: https://env-management.env-management:443
             secret:
               name: vc-env-management-ext
               namespace: env-management
