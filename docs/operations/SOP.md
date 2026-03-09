@@ -24,11 +24,19 @@ helm upgrade --install argo-cd argo/argo-cd \
   -n argo-cd \
   -f platform-delivery/argocd/bootstrap/values-local-kind.yaml
 ```
-4. Register Git repo secret:
+4. Add local hostname mapping for ingress:
+```bash
+echo "127.0.0.1 argocd.appfactory.local" | sudo tee -a /etc/hosts
+```
+5. Open Argo CD UI:
+```bash
+http://argocd.appfactory.local
+```
+6. Register Git repo secret:
 ```bash
 kubectl apply -f platform-delivery/argocd/bootstrap/repository-secret.yaml
 ```
-5. Bootstrap root app:
+7. Bootstrap root app:
 ```bash
 kubectl apply -f environments.yaml
 ```
@@ -39,6 +47,11 @@ kubectl apply -f environments.yaml
 ```bash
 kubectl -n argo-cd get applications
 ```
+Expected platform root apps:
+- `platform-prerequisites`
+- `platform-infra`
+- `platform-security`
+- `platform-delivery`
 2. Verify ApplicationSets:
 ```bash
 kubectl -n argo-cd get applicationsets

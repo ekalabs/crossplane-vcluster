@@ -5,13 +5,20 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - git:
-        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        revision: HEAD
-        directories:
-          - path: platform-security/identity/*
-          - path: platform-security/secrets/*
-          - path: developer-platform/observability
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: HEAD
+              directories:
+                - path: platform-security/identity/*
+                - path: platform-security/secrets/*
+                - path: developer-platform/observability
+          - clusters:
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+                  clusterName: env-management
   template:
     metadata:
       name: mgmt-{{path.basename}}
@@ -24,7 +31,7 @@ spec:
         targetRevision: HEAD
         path: '{{path}}'
       destination:
-        server: https://env-management.env-management:443
+        server: '{{server}}'
         namespace: crossplane-system
       syncPolicy:
         automated:

@@ -5,23 +5,24 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - list:
-        elements:
-          - env: preview
-            server: https://env-preview.env-preview:443
-          - env: qa
-            server: https://env-qa.env-qa:443
-          - env: stage
-            server: https://env-stage.env-stage:443
-          - env: prodlike
-            server: https://env-prodlike.env-prodlike:443
-          - env: prod
-            server: https://env-prod.env-prod:443
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/secret-type: cluster
+          matchExpressions:
+            - key: clusterName
+              operator: In
+              values:
+                - env-preview
+                - env-qa
+                - env-stage
+                - env-prodlike
+                - env-prod
   template:
     metadata:
-      name: '{{env}}-prometheus-agent'
+      name: '{{name}}-prometheus-agent'
       labels:
-        clusterName: 'env-{{env}}'
+        clusterName: '{{name}}'
     spec:
       project: default
       source:
@@ -44,7 +45,7 @@ spec:
               global:
                 scrape_interval: 30s
                 external_labels:
-                  environment: {{env}}
+                  environment: {{name}}
               extraFlags:
                 - enable-feature=agent
               service:

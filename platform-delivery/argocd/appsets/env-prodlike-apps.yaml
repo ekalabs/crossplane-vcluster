@@ -5,20 +5,27 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - merge:
-        mergeKeys:
-          - service
+    - matrix:
         generators:
-          - git:
-              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: HEAD
-              files:
-                - path: environment-config/prodlike/services/*.yaml
-          - git:
-              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: HEAD
-              files:
-                - path: promotion-repo/prodlike/*.yaml
+          - merge:
+              mergeKeys:
+                - service
+              generators:
+                - git:
+                    repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+                    revision: HEAD
+                    files:
+                      - path: environment-config/prodlike/services/*.yaml
+                - git:
+                    repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+                    revision: HEAD
+                    files:
+                      - path: promotion-repo/prodlike/*.yaml
+          - clusters:
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+                  clusterName: env-prodlike
   template:
     metadata:
       name: prodlike-{{appName}}
@@ -31,7 +38,7 @@ spec:
         targetRevision: HEAD
         path: '{{servicePath}}/k8s'
       destination:
-        server: https://env-prodlike.env-prodlike:443
+        server: '{{server}}'
         namespace: '{{namespace}}'
       syncPolicy:
         automated:

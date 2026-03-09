@@ -5,20 +5,27 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - merge:
-        mergeKeys:
-          - service
+    - matrix:
         generators:
-          - git:
-              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: HEAD
-              files:
-                - path: environment-config/stage/services/*.yaml
-          - git:
-              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-              revision: HEAD
-              files:
-                - path: promotion-repo/stage/*.yaml
+          - merge:
+              mergeKeys:
+                - service
+              generators:
+                - git:
+                    repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+                    revision: HEAD
+                    files:
+                      - path: environment-config/stage/services/*.yaml
+                - git:
+                    repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+                    revision: HEAD
+                    files:
+                      - path: promotion-repo/stage/*.yaml
+          - clusters:
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+                  clusterName: env-stage
   template:
     metadata:
       name: stage-{{appName}}
@@ -31,7 +38,7 @@ spec:
         targetRevision: HEAD
         path: '{{servicePath}}/k8s'
       destination:
-        server: https://env-stage.env-stage:443
+        server: '{{server}}'
         namespace: '{{namespace}}'
       syncPolicy:
         automated:

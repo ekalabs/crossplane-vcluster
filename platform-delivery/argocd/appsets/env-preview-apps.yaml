@@ -5,11 +5,18 @@ metadata:
   namespace: argo-cd
 spec:
   generators:
-    - git:
-        repoURL: https://github.com/ekalabs/crossplane-vcluster.git
-        revision: HEAD
-        files:
-          - path: environment-config/preview/services/*.yaml
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/ekalabs/crossplane-vcluster.git
+              revision: HEAD
+              files:
+                - path: environment-config/preview/services/*.yaml
+          - clusters:
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+                  clusterName: env-preview
   template:
     metadata:
       name: preview-{{appName}}
@@ -22,7 +29,7 @@ spec:
         targetRevision: HEAD
         path: '{{servicePath}}/k8s'
       destination:
-        server: https://env-preview.env-preview:443
+        server: '{{server}}'
         namespace: '{{namespace}}'
       syncPolicy:
         automated:
