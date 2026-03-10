@@ -7,6 +7,7 @@ resources:
   - clusters/namespaces/env-stage.yaml
   - clusters/namespaces/env-prodlike.yaml
   - clusters/namespaces/env-prod.yaml
+  - ingress/traefik/app.yaml
   - clusters/management/vcluster.yaml
   - clusters/management/bootstrap.yaml
   - clusters/management/crossplane-providers.yaml
