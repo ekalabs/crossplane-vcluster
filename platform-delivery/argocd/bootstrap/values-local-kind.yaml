@@ -12,6 +12,13 @@ server:
     enabled: true
     ingressClassName: traefik
     hostname: argocd.appfactory.local
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
 controller:
   resources:
     requests:
@@ -38,14 +45,6 @@ repoServer:
     timeoutSeconds: 5
     periodSeconds: 10
     failureThreshold: 6
-server:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 300m
-      memory: 512Mi
 applicationSet:
   resources:
     requests:
