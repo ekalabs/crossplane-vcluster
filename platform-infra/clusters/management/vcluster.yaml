@@ -42,6 +42,20 @@ spec:
               - env-management.env-management.svc
               - env-management.env-management.svc.cluster.local
             statefulSet:
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 2Gi
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+              probes:
+                livenessProbe:
+                  enabled: false
+                readinessProbe:
+                  enabled: true
+                startupProbe:
+                  enabled: true
               scheduling:
                 podManagementPolicy: OrderedReady
 
