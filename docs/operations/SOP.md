@@ -30,8 +30,9 @@ echo "127.0.0.1 argocd.appfactory.local" | sudo tee -a /etc/hosts
 ```
 5. Open Argo CD UI:
 ```bash
-http://argocd.appfactory.local
+https://argocd.appfactory.local
 ```
+If your browser warns about the certificate, proceed anyway (self-signed cert from Traefik).
 6. Register Git repo secret:
 ```bash
 kubectl apply -f platform-delivery/argocd/bootstrap/repository-secret.yaml

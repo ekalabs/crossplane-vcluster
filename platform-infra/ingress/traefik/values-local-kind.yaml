@@ -19,6 +19,8 @@ ports:
   websecure:
     port: 32443
     nodePort: 32443
+    tls:
+      enabled: true
   traefik:
     port: 32090
     nodePort: 32090

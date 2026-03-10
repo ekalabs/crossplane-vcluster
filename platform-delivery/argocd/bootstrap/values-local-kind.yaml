@@ -12,6 +12,9 @@ server:
     enabled: true
     ingressClassName: traefik
     hostname: argocd.appfactory.local
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
   resources:
     requests:
       cpu: 100m
